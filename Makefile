@@ -5,7 +5,7 @@ INSTANCE_TYPE ?= t2.micro
 MIN_SIZE ?= 1
 MAX_SIZE ?= 1
 
-apply:
+init:
 	@terraform init
 
 deploy: apply
