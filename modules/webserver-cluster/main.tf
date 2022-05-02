@@ -23,7 +23,7 @@ terraform {
 # queries AWS to fetch the list for the current account and region.
 # ---------------------------------------------------------------------------------------------------------------------
 
-data "aws_availability_zones" "all" {}
+#data "aws_availability_zones" "all" {}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CREATE THE AUTO SCALING GROUP
@@ -31,7 +31,7 @@ data "aws_availability_zones" "all" {}
 
 resource "aws_autoscaling_group" "example" {
   launch_configuration = aws_launch_configuration.example.id
-  availability_zones   = data.aws_availability_zones.all.names
+  availability_zones   = ["us-east-2a"]
 
   min_size = var.min_size
   max_size = var.max_size
@@ -92,8 +92,7 @@ resource "aws_security_group" "instance" {
 resource "aws_elb" "example" {
   name               = var.cluster_name
   security_groups    = [aws_security_group.elb.id]
-  availability_zones = data.aws_availability_zones.all.names
-
+  availability_zones = ["us-east-2a"]
   health_check {
     target              = "HTTP:${var.server_port}/"
     interval            = 30
@@ -110,6 +109,7 @@ resource "aws_elb" "example" {
     instance_protocol = "http"
   }
 }
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CREATE A SECURITY GROUP THAT CONTROLS WHAT TRAFFIC CAN GO IN AND OUT OF THE ELB
