@@ -92,7 +92,7 @@ resource "aws_security_group" "instance" {
 resource "aws_elb" "example" {
   name               = var.cluster_name
   security_groups    = [aws_security_group.elb.id]
-  availability_zones = ["us-east-2a"]
+  availability_zones = ["us-east-2b"]
   health_check {
     target              = "HTTP:${var.server_port}/"
     interval            = 30
