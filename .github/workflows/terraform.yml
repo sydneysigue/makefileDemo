@@ -22,31 +22,26 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: make format
         continue-on-error: true
         
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: make init
         
-      - name: PWD
-        run: pwd
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: make validate
         
-      - name: Checkov GitHub Action
-        run: checkov -d /home/github/_work/tfvarsDemo2/tfvarsDemo2
-        continue-on-error: true
-      # You may pin to the exact commit or the version.
-      # uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
-      # uses: bridgecrewio/checkov-action@v12.1347.0
+      #- name: Checkov GitHub Action
+      #  run: make checkov
+      #  continue-on-error: true
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -var-file="vars_stage.tfvars" -no-color -input=false
+        run: make plan
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -78,4 +73,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -var-file="vars_stage.tfvars" -auto-approve -input=false
+        run: make apply
