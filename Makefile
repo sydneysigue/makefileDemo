@@ -21,4 +21,4 @@ plan:
 	@terraform plan -var cluster_name=${CLUSTER_NAME} -var instance_type=${INSTANCE_TYPE} -var max_size=${MAX_SIZE} -var min_size=${MIN_SIZE} -var region=${REGION} -no-color -input=false
 
 apply:
-	@terraform apply -var cluster_name=${CLUSTER_NAME} -var instance_type=${INSTANCE_TYPE} -var max_size=${MAX_SIZE} -var min_size=${MIN_SIZE} -var region=${REGION}
+	@terraform apply -var cluster_name=${CLUSTER_NAME} -var instance_type=${INSTANCE_TYPE} -var max_size=${MAX_SIZE} -var min_size=${MIN_SIZE} -var region=${REGION} -auto-approve -input=false
