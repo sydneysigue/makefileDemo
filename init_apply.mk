@@ -6,7 +6,7 @@ MIN_SIZE ?= 1
 MAX_SIZE ?= 1
 
 flow:
-	@terraform plan -var cluster_name=${CLUSTER_NAME} -var instance_type=${INSTANCE_TYPE} -var max_size=${MAX_SIZE} -var min_size=${MIN_SIZE} -var region=${REGION}
+	@terraform plan -var cluster_name=${CLUSTER_NAME} -var instance_type=${INSTANCE_TYPE} -var max_size=${MAX_SIZE} -var min_size=${MIN_SIZE} -var region=${REGION} -no-color -input=false
 	
 
 
