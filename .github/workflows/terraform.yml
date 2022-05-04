@@ -34,9 +34,9 @@ jobs:
         id: validate
         run: make validate
         
-      #- name: Checkov GitHub Action
-      #  run: make checkov
-      #  continue-on-error: true
+      - name: Checkov GitHub Action
+        run: make checkov
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
