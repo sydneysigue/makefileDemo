@@ -1,38 +1,30 @@
-# This is a basic workflow to help you get started with Actions
-name: Terraform demo self hosted
+name: "Terraform"
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  terraform:
+    name: "Terraform"
     runs-on: self-hosted
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download unzip
-        run: sudo apt install wget curl unzip make -y
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+#         with:
+#           # terraform_version: 0.13.0:
+#           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
         
-      - name: Hashi
-        uses: hashicorp/setup-terraform@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          
       - name: Terraform Init
         id: init
         run: terraform init
@@ -40,10 +32,21 @@ jobs:
       - name: PWD
         run: pwd
       
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        
+      - name: Checkov GitHub Action
+        run: checkov -d /home/github/_work/tfvarsDemo2/tfvarsDemo2
+        continue-on-error: true
+      # You may pin to the exact commit or the version.
+      # uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
+      # uses: bridgecrewio/checkov-action@v12.1347.0
+
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: make -f init_apply.mk
+        run: terraform plan -var-file="vars_stage.tfvars" -no-color -input=false
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -69,3 +72,10 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -var-file="vars_stage.tfvars" -auto-approve -input=false
