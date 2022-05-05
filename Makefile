@@ -1,9 +1,5 @@
 #Variables
 ZONE ?= dev
-CLUSTER_NAME ?= webservers-stage
-INSTANCE_TYPE ?= t2.micro
-MIN_SIZE ?= 1
-MAX_SIZE ?= 1
 
 format:
 	@terraform fmt -check
