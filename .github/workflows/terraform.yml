@@ -34,7 +34,7 @@ jobs:
         id: validate
         run: make validate
         
-      - name: Checkov GitHub Action
+      - name: Checkov 
         run: make checkov
         continue-on-error: true
 
