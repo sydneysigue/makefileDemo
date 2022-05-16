@@ -8,7 +8,7 @@ terraform {
 # CONFIGURE OUR AWS CONNECTION
 # ------------------------------------------------------------------------------
 provider "aws" {
-  region = var.region
+  region = var.webserver_cluster[var.zone].region
 }
 # ------------------------------------------------------------------------------
 # DEPLOY THE WEBSERVER-CLUSTER MODULE
@@ -16,8 +16,8 @@ provider "aws" {
 module "webserver_cluster" {
   source = "./modules/webserver-cluster"
 
-  cluster_name  = var.cluster_name
-  instance_type = var.instance_type
-  min_size      = var.max_size
-  max_size      = var.max_size
+  cluster_name  = var.webserver_cluster[var.zone].cluster_name
+  instance_type = var.webserver_cluster[var.zone].instance_type
+  min_size      = var.webserver_cluster[var.zone].max_size
+  max_size      = var.webserver_cluster[var.zone].max_size
 }
