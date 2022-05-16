@@ -9,30 +9,38 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # REQUIRED PARAMETERS
 # ---------------------------------------------------------------------------------------------------------------------
-variable "region" {
+variable "zone" {}
+
+#Variables
+variable "webserver_cluster" {
   description = "the region the resources deploy in"
-  type        = string
+  type = map(map(string))
+  default = {
+    dev = {
+      region                            = "us-east-2"
+      cluster_name                      = "demo-dev"
+      instance_type                     = "t2.micro"
+      min_size                          = "1"
+      max_size                          = "1"
+    }
+    stage = {
+      region                            = "us-east-2"
+      cluster_name                      = "demo-stage"
+      instance_type                     = "t2.small"
+      min_size                          = "2"
+      max_size                          = "2"
+    }
+    prod = {
+      region                            = "us-east-2"
+      cluster_name                      = "demo-prod"
+      instance_type                     = "t2.medium"
+      min_size                          = "4"
+      max_size                          = "4"
+    }
+    }
+
 }
 
-variable "cluster_name" {
-  description = "The name to use for all the cluster resources"
-  type        = string
-}
-
-variable "instance_type" {
-  description = "The type of EC2 Instances to run (e.g. t2.micro)"
-  type        = string
-}
-
-variable "min_size" {
-  description = "The minimum number of EC2 Instances in the ASG"
-  type        = number
-}
-
-variable "max_size" {
-  description = "The maximum number of EC2 Instances in the ASG"
-  type        = number
-}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
