@@ -12,6 +12,9 @@ validate:
 
 checkov:
 	@checkov -d /home/github/_work/makefileDemo/makefileDemo
+	
+tfsec:
+	@tfsec ./
 
 plan:
 	@terraform plan -var zone=${ZONE} -no-color -input=false
