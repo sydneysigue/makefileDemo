@@ -15,7 +15,6 @@ provider "aws" {
 # ------------------------------------------------------------------------------
 module "webserver_cluster" {
   source = "./modules/webserver-cluster"
-
   cluster_name  = var.webserver_cluster[var.zone].cluster_name
   instance_type = var.webserver_cluster[var.zone].instance_type
   min_size      = var.webserver_cluster[var.zone].max_size
