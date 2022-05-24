@@ -18,7 +18,7 @@ variable "webserver_cluster" {
   default = {
     dev = {
       region                            = "us-east-2"
-      cluster_name                      = "demo-dev"
+      cluster_name                      = "demo-makefile-001"
       instance_type                     = "t2.micro"
       min_size                          = "1"
       max_size                          = "1"
